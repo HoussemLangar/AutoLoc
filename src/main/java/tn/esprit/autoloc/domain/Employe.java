@@ -27,4 +27,12 @@ public class Employe {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private RoleEmploye role;
+
+    // -------------------------------------------------------
+    // Un employé travaille dans une agence (ManyToOne)
+    // Plusieurs employés peuvent être dans la même agence
+    // -------------------------------------------------------
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_agence", nullable = false)
+    private Agence agence;
 }

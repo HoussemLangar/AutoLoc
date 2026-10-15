@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "contrat")
@@ -29,4 +31,19 @@ public class Contrat {
 
     @Column(nullable = false)
     private boolean valide;
+
+    // -------------------------------------------------------
+    // Un contrat est lié à une seule réservation (OneToOne)
+    // Contrat porte la FK id_reservation
+    // -------------------------------------------------------
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_reservation", nullable = false, unique = true)
+    private Reservation reservation;
+
+    // -------------------------------------------------------
+    // Un contrat peut avoir plusieurs paiements (OneToMany)
+    // mappedBy : la FK est du côté Paiement
+    // -------------------------------------------------------
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Paiement> paiements = new ArrayList<>();
 }

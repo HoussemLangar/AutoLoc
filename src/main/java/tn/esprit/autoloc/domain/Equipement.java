@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "equipement")
 @Getter
@@ -20,4 +23,11 @@ public class Equipement {
 
     @Column(nullable = false, length = 100)
     private String libelle;
+
+    // -------------------------------------------------------
+    // Côté inverse de la relation ManyToMany avec Vehicule
+    // mappedBy : la table de jointure est gérée par Vehicule
+    // -------------------------------------------------------
+    @ManyToMany(mappedBy = "equipements", fetch = FetchType.LAZY)
+    private Set<Vehicule> vehicules = new HashSet<>();
 }

@@ -29,4 +29,27 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private StatutReservation statut;
+
+    // -------------------------------------------------------
+    // Une réservation concerne un seul véhicule (ManyToOne)
+    // Un véhicule peut avoir plusieurs réservations
+    // -------------------------------------------------------
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vehicule", nullable = false)
+    private Vehicule vehicule;
+
+    // -------------------------------------------------------
+    // Une réservation est faite par un seul client (ManyToOne)
+    // Un client peut faire plusieurs réservations
+    // -------------------------------------------------------
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_client", nullable = false)
+    private Client client;
+
+    // -------------------------------------------------------
+    // Une réservation génère un seul contrat (OneToOne)
+    // La FK id_reservation est portée par Contrat
+    // -------------------------------------------------------
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Contrat contrat;
 }

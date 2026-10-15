@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "vehicule")
@@ -39,4 +43,32 @@ public class Vehicule {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private StatutVehicule statut;
+
+    // -------------------------------------------------------
+    // Vehicule appartient à une Agence (ManyToOne)
+    // Plusieurs véhicules peuvent appartenir à la même agence
+    // -------------------------------------------------------
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_agence", nullable = false)
+    private Agence agence;
+
+    // -------------------------------------------------------
+    // Un véhicule peut avoir plusieurs équipements
+    // Un équipement peut équiper plusieurs véhicules (ManyToMany)
+    // Table de jointure : vehicule_equipement
+    // -------------------------------------------------------
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "vehicule_equipement",
+        joinColumns = @JoinColumn(name = "id_vehicule"),
+        inverseJoinColumns = @JoinColumn(name = "id_equipement")
+    )
+    private Set<Equipement> equipements = new HashSet<>();
+
+    // -------------------------------------------------------
+    // Un véhicule peut avoir plusieurs maintenances (OneToMany)
+    // mappedBy : la FK est du côté Maintenance
+    // -------------------------------------------------------
+    @OneToMany(mappedBy = "vehicule", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Maintenance> maintenances = new ArrayList<>();
 }

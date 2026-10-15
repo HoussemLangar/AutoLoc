@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "agence")
 @Getter
@@ -29,4 +32,18 @@ public class Agence {
 
     @Column(nullable = false, length = 20)
     private String telephone;
+
+    // -------------------------------------------------------
+    // Une agence possède plusieurs véhicules (OneToMany)
+    // mappedBy : la FK est du côté Vehicule
+    // -------------------------------------------------------
+    @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Vehicule> vehicules = new ArrayList<>();
+
+    // -------------------------------------------------------
+    // Une agence emploie plusieurs employés (OneToMany)
+    // mappedBy : la FK est du côté Employe
+    // -------------------------------------------------------
+    @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Employe> employes = new ArrayList<>();
 }
